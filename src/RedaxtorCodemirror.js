@@ -3,11 +3,15 @@ import Dialog from 'material-ui/lib/dialog'
 import FlatButton from 'material-ui/lib/flat-button'
 import RaisedButton from 'material-ui/lib/raised-button'
 import Codemirror from 'react-codemirror'
+import {html as html_beautify} from 'js-beautify';
 require('codemirror/mode/htmlmixed/htmlmixed')
 
 export default class CodeMirror extends Component {
     constructor(props) {
         super(props);
+        this.beautifyOptions = {
+            "wrap_line_length": 140
+        };
         if (this.props.node) {
             this.state = {
                 sourceEditorActive: false
@@ -27,38 +31,10 @@ export default class CodeMirror extends Component {
         this.setState({sourceEditorActive: false})
     }
 
-    makeReadable(readableHTML) {
-        var lb = '\r\n', i;
-        var htags = ["<html", "</html>", "</head>", "<title", "</title>", "<meta", "<link", "<style", "</style>", "</body>"];
-        for (i = 0; i < htags.length; ++i) {
-            var hhh = htags[i];
-            readableHTML = readableHTML.replace(new RegExp(hhh, 'gi'), lb + hhh);
-        }
-        var btags = ["</div>", "</span>", "</form>", "</fieldset>", "<br>", "<br />", "<hr", "<pre", "</pre>", "<blockquote",
-            "</blockquote>", "<ul", "</ul>", "<ol", "</ol>", "<li", "<dl", "</dl>", "<dt", "</dt>", "<dd", "</dd>",
-            "<\!--", "<table", "</table>", "<caption", "</caption>", "<th", "</th>", "<tr", "</tr>", "<td", "</td>", "<script",
-            "</script>", "<noscript", "</noscript>", "<a", "</a>", "<img"];
-        for (i = 0; i < btags.length; ++i) {
-            var bbb = btags[i];
-            readableHTML = readableHTML.replace(new RegExp(bbb, 'gi'), lb + bbb);
-        }
-        var ftags = ["<label", "</label>", "<legend", "</legend>", "<object", "</object>", "<embed", "</embed>", "<select", "</select>", "<option", "<option", "<input", "<textarea", "</textarea>"];
-        for (i = 0; i < ftags.length; ++i) {
-            var fff = ftags[i];
-            readableHTML = readableHTML.replace(new RegExp(fff, 'gi'), lb + fff);
-        }
-        var xtags = ["<body", "<head", "<div", "<span", "<p", "<form", "<fieldset"];
-        for (i = 0; i < xtags.length; ++i) {
-            var xxx = xtags[i];
-            readableHTML = readableHTML.replace(new RegExp(xxx, 'gi'), lb + lb + xxx);
-        }
-        return readableHTML;
-    }
-
     render() {
 
         const customContentStyle = {
-            width: '60%',
+            width: '80%',
             maxWidth: 'none'
         };
         var options = {
@@ -79,9 +55,9 @@ export default class CodeMirror extends Component {
                             onClick={()=>this.props.node?this.onSave():(this.props.onSave && this.props.onSave(this.code))}
                 />
             ];
-            codemirror = <Dialog title="Dialog With Actions" actions={actions} modal={true} open={true}
+            codemirror = <Dialog title="Edit Source code here" actions={actions} modal={true} open={true}
                                  contentStyle={customContentStyle}>
-                <Codemirror value={this.makeReadable(this.props.node?this.props.data.html:this.props.html)}
+                <Codemirror value={html_beautify(this.props.node?this.props.data.html:this.props.html,this.beautifyOptions)}
                             onChange={this.updateCode.bind(this)} options={options}/>
             </Dialog>
         }

@@ -1,6 +1,6 @@
 {
   "name": "redaxtor-codemirror",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "CodeMirror component for Redaxtor library",
   "main": "lib/index.js",
   "files": [
@@ -32,6 +32,7 @@
     "rimraf": "^2.5.2"
   },
   "dependencies": {
+    "js-beautify": "^1.6.2",
     "react-codemirror": "^0.2.5"
   }
 }
