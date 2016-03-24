@@ -5,10 +5,9 @@ Redaxtor-codemirror is a source-editor plugin for Redaxtor library
 ```js
 var Redaxtor = require('redaxtor');
 var RedaxtorCodemirror = require('redaxtor-codemirror');
-require('codemirror/mode/htmlmixed/htmlmixed')
 
 var components = {
-    html: RedaxtorCodemirror
+    source: RedaxtorCodemirror
 }
 
 let redaxtor = new Redaxtor({

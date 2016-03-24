@@ -1,10 +1,9 @@
 import React, {Component} from "react"
 import Dialog from 'material-ui/lib/dialog'
 import FlatButton from 'material-ui/lib/flat-button'
-import RaisedButton from 'material-ui/lib/raised-button'
 import Codemirror from 'react-codemirror'
-import {html as html_beautify} from 'js-beautify';
-require('codemirror/mode/htmlmixed/htmlmixed')
+import {html as html_beautify} from 'js-beautify'
+require('codemirror/mode/htmlmixed/htmlmixed');
 
 export default class CodeMirror extends Component {
     constructor(props) {
@@ -57,8 +56,9 @@ export default class CodeMirror extends Component {
             ];
             codemirror = <Dialog title="Edit Source code here" actions={actions} modal={true} open={true}
                                  contentStyle={customContentStyle}>
-                <Codemirror value={html_beautify(this.props.node?this.props.data.html:this.props.html,this.beautifyOptions)}
-                            onChange={this.updateCode.bind(this)} options={options}/>
+                <Codemirror
+                    value={html_beautify(this.props.node?this.props.data.html:this.props.html,this.beautifyOptions)}
+                    onChange={this.updateCode.bind(this)} options={options}/>
             </Dialog>
         }
         return (
