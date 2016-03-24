@@ -8,7 +8,7 @@ var RedaxtorCodemirror = require('redaxtor-codemirror');
 require('style!css!codemirror/lib/codemirror.css');
 
 var components = {
-    html: RedaxtorCodemirror
+    source: RedaxtorCodemirror
 }
 
 let redaxtor = new Redaxtor({
