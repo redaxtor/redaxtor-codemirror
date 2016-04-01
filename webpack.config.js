@@ -3,7 +3,7 @@
 var path = require('path')
 var webpack = require('webpack')
 var env = process.env.NODE_ENV
-// var node_modules_dir = path.resolve(__dirname, 'node_modules');
+var node_modules_dir = path.resolve(__dirname, 'node_modules');
 
 var config = {
     output: {
@@ -39,7 +39,10 @@ var config = {
         noParse: []
     },
     resolve: {
-        extensions: ['', '.js', '.jsx']
+        extensions: ['', '.js', '.jsx'],
+        alias: {
+            react: path.resolve(node_modules_dir, 'react')
+        }
     }
     // devtool: "eval-source-map"
     // devtool: "eval-cheap-source-map"

@@ -43,8 +43,8 @@ export default class CodeMirror extends Component {
         var codemirror = null;
 
         if (!this.state.sourceEditorActive && this.props.node) {
-            codemirror = <div dangerouslySetInnerHTML={{__html: this.props.data.html}}
-                              onClick={e=>{e.preventDefault();this.setState({sourceEditorActive: true})}}></div>;
+            codemirror = <this.props.wrapper style={this.props.style} dangerouslySetInnerHTML={{__html: this.props.data.html}}
+                              onClick={e=>{e.preventDefault();this.setState({sourceEditorActive: true})}}/>;
         } else {
             const actions = [
                 <FlatButton label="Cancel" secondary={true}
@@ -54,12 +54,18 @@ export default class CodeMirror extends Component {
                             onClick={()=>this.props.node?this.onSave():(this.props.onSave && this.props.onSave(this.code))}
                 />
             ];
-            codemirror = <Dialog title="Edit Source code here" actions={actions} modal={true} open={true}
-                                 contentStyle={customContentStyle}>
-                <Codemirror
-                    value={html_beautify(this.props.node?this.props.data.html:this.props.html,this.beautifyOptions)}
-                    onChange={this.updateCode.bind(this)} options={options}/>
-            </Dialog>
+            codemirror =
+                <div>
+                    <div dangerouslySetInnerHTML={{__html: (this.props.data&&this.props.data.html)||this.props.html}}></div>
+                    <Dialog title="Edit Source code here" actions={actions} modal={true} open={true}
+                            contentStyle={customContentStyle}>
+                        <Codemirror
+                            value={html_beautify(this.props.node?this.props.data.html:this.props.html,this.beautifyOptions)}
+                            onChange={this.updateCode.bind(this)} options={options}/>
+                    </Dialog>
+                </div>
+
+
         }
         return (
             <div>
