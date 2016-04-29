@@ -56,7 +56,7 @@ export default class CodeMirror extends Component {
             ];
             codemirror =
                 <div>
-                    <div dangerouslySetInnerHTML={{__html: (this.props.data&&this.props.data.html)||this.props.html}}></div>
+                    {this.props.node && <div dangerouslySetInnerHTML={{__html: (this.props.data&&this.props.data.html)||this.props.html}}></div>}
                     <Dialog title="Edit Source code here" actions={actions} modal={true} open={true}
                             contentStyle={customContentStyle}>
                         <Codemirror
