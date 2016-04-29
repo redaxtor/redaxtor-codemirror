@@ -41,10 +41,14 @@ export default class CodeMirror extends Component {
             mode: 'htmlmixed'
         };
         var codemirror = null;
-
-        if (!this.state.sourceEditorActive && this.props.node) {
-            codemirror = <this.props.wrapper style={this.props.style} dangerouslySetInnerHTML={{__html: this.props.data.html}}
-                              onClick={e=>{e.preventDefault();this.setState({sourceEditorActive: true})}}/>;
+        if (!this.props.edit) {
+            codemirror =
+                <div dangerouslySetInnerHTML={{__html: (this.props.data&&this.props.data.html)||this.props.html}}></div>
+        }
+        else if (!this.state.sourceEditorActive && this.props.node) {
+            codemirror =
+                <this.props.wrapper style={this.props.style} dangerouslySetInnerHTML={{__html: this.props.data.html}}
+                                    onClick={e=>{e.preventDefault();this.setState({sourceEditorActive: true})}}/>;
         } else {
             const actions = [
                 <FlatButton label="Cancel" secondary={true}
@@ -56,7 +60,8 @@ export default class CodeMirror extends Component {
             ];
             codemirror =
                 <div>
-                    {this.props.node && <div dangerouslySetInnerHTML={{__html: (this.props.data&&this.props.data.html)||this.props.html}}></div>}
+                    {this.props.node && <div
+                        dangerouslySetInnerHTML={{__html: (this.props.data&&this.props.data.html)||this.props.html}}></div>}
                     <Dialog title="Edit Source code here" actions={actions} modal={true} open={true}
                             contentStyle={customContentStyle}>
                         <Codemirror
