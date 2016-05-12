@@ -39,13 +39,10 @@ export default class CodeMirror extends Component {
             mode: 'htmlmixed'
         };
         var codemirror = null;
-        if (!this.state.sourceEditorActive && this.props.node) {
-            codemirror = <this.props.wrapper className={this.props.className}
-                                             dangerouslySetInnerHTML={{__html: this.props.data.html}}
-                                             onClick={e=>{e.preventDefault();this.setState({sourceEditorActive: true})}}/>;
-        if (!this.props.edit) {
+        if (this.props.hasOwnProperty('edit') && !this.props.edit) {
             codemirror =
-                <div dangerouslySetInnerHTML={{__html: (this.props.data&&this.props.data.html)||this.props.html}}></div>
+                <div
+                    dangerouslySetInnerHTML={{__html: (this.props.data&&this.props.data.html)||this.props.html}}></div>
         }
         else if (!this.state.sourceEditorActive && this.props.node) {
             codemirror =
@@ -54,8 +51,7 @@ export default class CodeMirror extends Component {
         } else {
             codemirror =
                 <div>
-                    <div
-                        dangerouslySetInnerHTML={{__html: (this.props.data&&this.props.data.html)||this.props.html}}></div>
+                    {this.state.sourceEditorActive && <div dangerouslySetInnerHTML={{__html: (this.props.data&&this.props.data.html)||this.props.html}}></div>}
                     <Modal isOpen={true} overlayClassName="modal-overlay show" className="modal-content"
                            onRequestClose={this.onClose.bind(this)}>
                         <Codemirror
@@ -63,19 +59,22 @@ export default class CodeMirror extends Component {
                             onChange={this.updateCode.bind(this)} options={options}/>
                         <div className="actions-bar">
                             <div className="button button-cancel" onClick={this.onClose.bind(this)}>Cancel</div>
-                            <div className="button button-save" onClick={()=>this.props.node?this.onSave():(this.props.onSave && this.props.onSave(this.code))}>Save</div>
+                            <div className="button button-save"
+                                 onClick={()=>this.props.node?this.onSave():(this.props.onSave && this.props.onSave(this.code))}>
+                                Save
+                            </div>
                         </div>
                     </Modal>
                 </div>
 
 
         }
+
         return (
             <div>
                 {codemirror}
             </div>
         )
-
     }
 }
 
