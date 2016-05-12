@@ -43,6 +43,14 @@ export default class CodeMirror extends Component {
             codemirror = <this.props.wrapper className={this.props.className}
                                              dangerouslySetInnerHTML={{__html: this.props.data.html}}
                                              onClick={e=>{e.preventDefault();this.setState({sourceEditorActive: true})}}/>;
+        if (!this.props.edit) {
+            codemirror =
+                <div dangerouslySetInnerHTML={{__html: (this.props.data&&this.props.data.html)||this.props.html}}></div>
+        }
+        else if (!this.state.sourceEditorActive && this.props.node) {
+            codemirror =
+                <this.props.wrapper style={this.props.style} dangerouslySetInnerHTML={{__html: this.props.data.html}}
+                                    onClick={e=>{e.preventDefault();this.setState({sourceEditorActive: true})}}/>;
         } else {
             codemirror =
                 <div>
