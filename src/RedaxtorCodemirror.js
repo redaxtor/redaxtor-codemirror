@@ -39,7 +39,6 @@ export default class CodeMirror extends Component {
             mode: 'htmlmixed'
         };
         var codemirror = null;
-
         if (!this.state.sourceEditorActive && this.props.node) {
             codemirror = <this.props.wrapper className={this.props.className}
                                              dangerouslySetInnerHTML={{__html: this.props.data.html}}
@@ -49,7 +48,7 @@ export default class CodeMirror extends Component {
                 <div>
                     <div
                         dangerouslySetInnerHTML={{__html: (this.props.data&&this.props.data.html)||this.props.html}}></div>
-                    <Modal isOpen={true} overlayClassName="modal-overlay" className="modal-content"
+                    <Modal isOpen={true} overlayClassName="modal-overlay show" className="modal-content"
                            onRequestClose={this.onClose.bind(this)}>
                         <Codemirror
                             value={html_beautify(this.props.node?this.props.data.html:this.props.html,this.beautifyOptions)}
