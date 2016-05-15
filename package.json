@@ -29,11 +29,11 @@
     "cross-env": "^1.0.7",
     "eslint": "^2.4.0",
     "eslint-plugin-react": "^4.2.3",
-    "react-modal": "^1.1.0",
     "rimraf": "^2.5.2"
   },
   "dependencies": {
     "js-beautify": "^1.6.2",
-    "react-codemirror": "^0.2.5"
+    "react-codemirror": "^0.2.5",
+    "react-modal": "^1.1.0"
   }
 }
