@@ -9,7 +9,7 @@ var config = {
     output: {
         path: path.join(__dirname, 'dist/'),
         // filename: '[name].js',
-        library: 'Redaxtor-Codemirror',
+        library: 'RedaxtorCodemirror',
         libraryTarget: 'umd'
     },
     plugins: [
