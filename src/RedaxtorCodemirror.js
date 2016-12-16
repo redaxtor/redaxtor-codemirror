@@ -52,7 +52,7 @@ export default class CodeMirror extends Component {
             codemirror =
                 <div>
                     {this.state.sourceEditorActive && <div dangerouslySetInnerHTML={{__html: (this.props.data&&this.props.data.html)||this.props.html}}></div>}
-                    <Modal isOpen={true} overlayClassName="modal-overlay show" className="modal-content"
+                    <Modal isOpen={true} overlayClassName="r_modal-overlay show" className="r_modal-content"
                            onRequestClose={this.onClose.bind(this)}>
                         <Codemirror
                             value={html_beautify(this.props.node?this.props.data.html:this.props.html,this.beautifyOptions)}
