@@ -17,6 +17,7 @@ export default class CodeMirror extends Component {
         } else {
             this.state = {}
         }
+        this.code = this.props.data && this.props.data.html || this.props.html;
     }
 
     updateCode(newCode) {
@@ -56,7 +57,7 @@ export default class CodeMirror extends Component {
                 <this.props.wrapper className={this.props.className}>
                     {this.state.sourceEditorActive && <div
                         dangerouslySetInnerHTML={{__html: (this.props.data && this.props.data.html) || this.props.html}}></div>}
-                    <Modal contentLabel="Edit source" isOpen={true} overlayClassName="r_modal-overlay show"
+                    <Modal contentLabel="Edit source" isOpen={true} overlayClassName="r_modal-overlay r_visible"
                            className="r_modal-content"
                            onRequestClose={this.onClose.bind(this)}>
                         <Codemirror
@@ -80,3 +81,8 @@ export default class CodeMirror extends Component {
 }
 
 
+/**
+ * Specify component should be rendered inside target node and capture all inside html
+ * @type {string}
+ */
+CodeMirror.__renderType = "INSIDE";
