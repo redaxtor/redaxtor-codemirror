@@ -20,6 +20,11 @@ export default class CodeMirror extends Component {
         this.code = this.props.data && this.props.data.html || this.props.html;
     }
 
+
+    componentWillUnmount(){
+        console.log(`Code mirror ${this.props.id} unmounted`);
+    }
+
     updateCode(newCode) {
         this.code = newCode
     }
@@ -86,3 +91,4 @@ export default class CodeMirror extends Component {
  * @type {string}
  */
 CodeMirror.__renderType = "INSIDE";
+CodeMirror.__name = "Source";
