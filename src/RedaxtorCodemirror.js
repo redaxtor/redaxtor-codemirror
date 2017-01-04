@@ -17,6 +17,12 @@ export default class CodeMirror extends Component {
         } else {
             this.state = {}
         }
+        this.code = this.props.data && this.props.data.html || this.props.html;
+    }
+
+
+    componentWillUnmount(){
+        console.log(`Code mirror ${this.props.id} unmounted`);
     }
 
     updateCode(newCode) {
@@ -39,43 +45,50 @@ export default class CodeMirror extends Component {
             mode: 'htmlmixed'
         };
         var codemirror = null;
-        if (this.props.hasOwnProperty('edit') && !this.props.edit) {
+        if (this.props.hasOwnProperty('editorActive') && !this.props.editorActive) {
             codemirror =
-                <div
-                    dangerouslySetInnerHTML={{__html: (this.props.data&&this.props.data.html)||this.props.html}}></div>
+                <this.props.wrapper className={this.props.className}
+                    dangerouslySetInnerHTML={{__html: (this.props.data && this.props.data.html) || this.props.html}}/>
         }
         else if (!this.state.sourceEditorActive && this.props.node) {
             codemirror =
-                <this.props.wrapper style={this.props.style} dangerouslySetInnerHTML={{__html: this.props.data.html}}
-                                    onClick={e=>{e.preventDefault();this.setState({sourceEditorActive: true})}}/>;
+                <this.props.wrapper className={this.props.className} style={this.props.style} dangerouslySetInnerHTML={{__html: this.props.data.html}}
+                                    onClick={e=> {
+                                        e.preventDefault();
+                                        this.setState({sourceEditorActive: true})
+                                    }}/>;
         } else {
             codemirror =
-                <div>
-                    {this.state.sourceEditorActive && <div dangerouslySetInnerHTML={{__html: (this.props.data&&this.props.data.html)||this.props.html}}></div>}
-                    <Modal isOpen={true} overlayClassName="modal-overlay show" className="modal-content"
+                <this.props.wrapper className={this.props.className}>
+                    {this.state.sourceEditorActive && <div
+                        dangerouslySetInnerHTML={{__html: (this.props.data && this.props.data.html) || this.props.html}}></div>}
+                    <Modal contentLabel="Edit source" isOpen={true} overlayClassName="r_modal-overlay r_visible"
+                           className="r_modal-content"
                            onRequestClose={this.onClose.bind(this)}>
                         <Codemirror
-                            value={html_beautify(this.props.node?this.props.data.html:this.props.html,this.beautifyOptions)}
+                            value={html_beautify(this.props.node ? this.props.data.html : this.props.html, this.beautifyOptions)}
                             onChange={this.updateCode.bind(this)} options={options}/>
                         <div className="actions-bar">
                             <div className="button button-cancel" onClick={this.onClose.bind(this)}>Cancel</div>
                             <div className="button button-save"
-                                 onClick={()=>this.props.node?this.onSave():(this.props.onSave && this.props.onSave(this.code))}>
+                                 onClick={()=>this.props.node ? this.onSave() : (this.props.onSave && this.props.onSave(this.code))}>
                                 Save
                             </div>
                         </div>
                     </Modal>
-                </div>
+                </this.props.wrapper>
 
 
         }
 
-        return (
-            <div>
-                {codemirror}
-            </div>
-        )
+        return codemirror
     }
 }
 
 
+/**
+ * Specify component should be rendered inside target node and capture all inside html
+ * @type {string}
+ */
+CodeMirror.__renderType = "INSIDE";
+CodeMirror.__name = "Source";

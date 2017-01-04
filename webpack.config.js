@@ -9,7 +9,7 @@ var config = {
     output: {
         path: path.join(__dirname, 'dist/'),
         // filename: '[name].js',
-        library: 'Redaxtor-Codemirror',
+        library: 'RedaxtorCodemirror',
         libraryTarget: 'umd'
     },
     plugins: [
@@ -43,8 +43,8 @@ var config = {
         alias: {
             react: path.resolve(node_modules_dir, 'react')
         }
-    }
-    // devtool: "eval-source-map"
+    },
+    devtool: "source-map"
     // devtool: "eval-cheap-source-map"
 }
 
