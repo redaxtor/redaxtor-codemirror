@@ -44,28 +44,38 @@ export default class CodeMirror extends Component {
 
     createEditor(){
         // this.props.node
-        this.props.node.addEventListener('click', this.onClickBound);
+        if(this.props.node) {
+            this.props.node.addEventListener('click', this.onClickBound);
+        }
     }
 
     destroyEditor(){
-        this.props.node.removeEventListener('click', this.onClickBound);
+        if(this.props.node) {
+            this.props.node.removeEventListener('click', this.onClickBound);
+        }
     }
 
     renderNonReactAttributes(){
         if (this.props.editorActive && !this.state.sourceEditorActive) {
             this.createEditor();
-            this.props.node.classList.add(...this.props.className.split(' '));
+            if(this.props.node) {
+                this.props.node.classList.add(...this.props.className.split(' '));
+            }
         }
         else {
             this.destroyEditor();
-            this.props.node.classList.remove(...this.props.className.split(' '));
+            if(this.props.node) {
+                this.props.node.classList.remove(...this.props.className.split(' '));
+            }
         }
 
         //render new data
-        let content = this.props.node.innerHTML;
-        let data = this.props.data;
-        if (content != data.html) {
-            this.props.node.innerHTML = data.html;
+        if(this.props.node) {
+            let content = this.props.node.innerHTML;
+            let data = this.props.data;
+            if (content != data.html) {
+                this.props.node.innerHTML = data.html;
+            }
         }
 
     }
@@ -76,33 +86,6 @@ export default class CodeMirror extends Component {
     }
 
     render() {
-       /* var options = {
-            lineNumbers: true,
-            mode: 'htmlmixed'
-        };
-        var codemirror = null;
-        if (this.props.hasOwnProperty('editorActive') && !this.props.editorActive) {
-            codemirror =
-                <this.props.node className={this.props.className}
-                    dangerouslySetInnerHTML={{__html: (this.props.data && this.props.data.html) || this.props.html}}/>
-        }
-        else if (!this.state.sourceEditorActive && this.props.node) {
-            codemirror =
-                <this.props.node className={this.props.className} style={this.props.style} dangerouslySetInnerHTML={{__html: this.props.data.html}}
-                                    onClick={e=> {
-                                        e.preventDefault();
-                                        this.setState({sourceEditorActive: true})
-                                    }}/>;
-        } else {
-            codemirror =
-                <this.props.node className={this.props.className}>
-                    {this.state.sourceEditorActive && <div
-                        dangerouslySetInnerHTML={{__html: (this.props.data && this.props.data.html) || this.props.html}}></div>}
-
-                </this.props.node>
-
-
-        }*/
         let codemirror = React.createElement(this.props.wrapper, {});
         if(this.state.sourceEditorActive){
             let options = {
