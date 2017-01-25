@@ -86,17 +86,21 @@ export default class CodeMirror extends Component {
     }
 
     render() {
-        let codemirror = React.createElement(this.props.wrapper, {});
-        if(this.state.sourceEditorActive){
+        let codemirror = null;
+
+        if(this.state.sourceEditorActive || !this.props.node){
+            //if there is no this.props.node, it means this component is invoked manually with custom html directly in props and should be just rendered
+            //if this.state.sourceEditorActive and this.props.node presents, it means that is a regular piece with control over node and sourceEditorActive means modal is open
             let options = {
                 lineNumbers: true,
                 mode: 'htmlmixed'
             };
+            const html = this.props.node ? this.props.data.html : this.props.html;
             codemirror =  <Modal contentLabel="Edit source" isOpen={true} overlayClassName="r_modal-overlay r_visible"
                                  className="r_modal-content"
                                  onRequestClose={this.onClose.bind(this)}>
                 <Codemirror
-                    value={html_beautify(this.props.node ? this.props.data.html : this.props.html, this.beautifyOptions)}
+                    value={html_beautify(html)}
                     onChange={this.updateCode.bind(this)} options={options}/>
                 <div className="actions-bar">
                     <div className="button button-cancel" onClick={this.onClose.bind(this)}>Cancel</div>
@@ -106,6 +110,8 @@ export default class CodeMirror extends Component {
                     </div>
                 </div>
             </Modal>;
+        } else {
+            codemirror = React.createElement(this.props.wrapper, {});
         }
 
         this.renderNonReactAttributes();
