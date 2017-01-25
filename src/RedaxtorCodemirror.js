@@ -61,6 +61,13 @@ export default class CodeMirror extends Component {
             this.props.node.classList.remove(...this.props.className.split(' '));
         }
 
+        //render new data
+        let content = this.props.node.innerHTML;
+        let data = this.props.data;
+        if (content != data.html) {
+            this.props.node.innerHTML = data.html;
+        }
+
     }
 
     onClick(e){
