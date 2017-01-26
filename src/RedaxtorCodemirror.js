@@ -23,7 +23,6 @@ export default class CodeMirror extends Component {
         this.code = this.props.data && this.props.data.html || this.props.html;
     }
 
-
     componentWillUnmount(){
         console.log(`Code mirror ${this.props.id} unmounted`);
     }
@@ -33,7 +32,7 @@ export default class CodeMirror extends Component {
     }
 
     onSave() {
-        this.props.updatePiece && this.props.updatePiece(this.props.id, {data: {html: this.code}});
+        this.props.updatePiece && this.props.updatePiece(this.props.id, {data: {html: this.code, updateNode: this.props.data.updateNode}});
         this.props.savePiece && this.props.savePiece(this.props.id);
         this.setState({sourceEditorActive: false})
     }
@@ -73,7 +72,8 @@ export default class CodeMirror extends Component {
         if(this.props.node) {
             let content = this.props.node.innerHTML;
             let data = this.props.data;
-            if (content != data.html) {
+            let needRender = data.updateNode != undefined && data.updateNode != null ? data.updateNode : true;
+            if (content != data.html && needRender == true) {
                 this.props.node.innerHTML = data.html;
             }
         }
