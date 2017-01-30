@@ -21,8 +21,11 @@ export default class CodeMirror extends Component {
             this.state = {}
         }
         this.code = this.props.data && this.props.data.html || this.props.html;
-    }
 
+        if(this.props.data) {
+            this.initDataKeys = Object.keys(this.props.data);
+        }
+    }
 
     componentWillUnmount(){
         console.log(`Code mirror ${this.props.id} unmounted`);
@@ -32,8 +35,21 @@ export default class CodeMirror extends Component {
         this.code = newCode
     }
 
+    shouldComponentUpdate(nextProps, nextState){
+        let data = this.props.data;
+        if (data) {
+            let needRender = data.updateNode != undefined && data.updateNode != null ? data.updateNode : true;
+            if (!needRender && nextProps.data != this.props.data) {
+                let isChanged = false;
+                this.initDataKeys.forEach(key => isChanged = isChanged && (nextProps.data[key] != this.props.data[key]));
+                this.props.setPieceMessage && this.props.setPieceMessage(this.props.id, 'Page refresh required', 'warning');
+            }
+        }
+        return true;
+    }
+
     onSave() {
-        this.props.updatePiece && this.props.updatePiece(this.props.id, {data: {html: this.code}});
+        this.props.updatePiece && this.props.updatePiece(this.props.id, {data: {html: this.code, updateNode: this.props.data.updateNode}});
         this.props.savePiece && this.props.savePiece(this.props.id);
         this.setState({sourceEditorActive: false})
     }
@@ -73,7 +89,8 @@ export default class CodeMirror extends Component {
         if(this.props.node) {
             let content = this.props.node.innerHTML;
             let data = this.props.data;
-            if (content != data.html) {
+            let needRender = data.updateNode != undefined && data.updateNode != null ? data.updateNode : true;
+            if (content != data.html && needRender == true) {
                 this.props.node.innerHTML = data.html;
             }
         }
