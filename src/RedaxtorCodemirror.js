@@ -21,6 +21,10 @@ export default class CodeMirror extends Component {
             this.state = {}
         }
         this.code = this.props.data && this.props.data.html || this.props.html;
+
+        if(this.props.data) {
+            this.initDataKeys = Object.keys(this.props.data);
+        }
     }
 
     componentWillUnmount(){
@@ -29,6 +33,19 @@ export default class CodeMirror extends Component {
 
     updateCode(newCode) {
         this.code = newCode
+    }
+
+    shouldComponentUpdate(nextProps, nextState){
+        let data = this.props.data;
+        if (data) {
+            let needRender = data.updateNode != undefined && data.updateNode != null ? data.updateNode : true;
+            if (!needRender && nextProps.data != this.props.data) {
+                let isChanged = false;
+                this.initDataKeys.forEach(key => isChanged = isChanged && (nextProps.data[key] != this.props.data[key]));
+                this.props.setPieceMessage && this.props.setPieceMessage(this.props.id, 'Page refresh required', 'warning');
+            }
+        }
+        return true;
     }
 
     onSave() {
