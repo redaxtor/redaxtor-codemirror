@@ -142,4 +142,4 @@ export default class CodeMirror extends Component {
  * @type {string}
  */
 CodeMirror.__renderType = "BEFORE";
-CodeMirror.__name = "Source";
+CodeMirror.__name = "Source code";
