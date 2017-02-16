@@ -27,6 +27,22 @@ export default class CodeMirror extends Component {
         }
     }
 
+    /**
+     * That is a common public method that should activate component editor if it presents
+     */
+    activateEditor() {
+        if(this.props.editorActive && !this.state.sourceEditorActive) {
+            this.setState({sourceEditorActive: true});
+        }
+    }
+
+    componentWillReceiveProps(newProps) {
+        if(newProps.manualActivation) {
+            this.props.onManualActivation(this.props.id);
+            this.activateEditor();
+        }
+    }
+
     componentWillUnmount(){
         console.log(`Code mirror ${this.props.id} unmounted`);
     }
