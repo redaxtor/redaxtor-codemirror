@@ -27,12 +27,19 @@ export default class CodeMirror extends Component {
         }
     }
 
+    setEditorActive(active) {
+        if(active != this.state.sourceEditorActive) {
+            this.setState({sourceEditorActive: active});
+            this.props.onEditorActive && this.props.onEditorActive(this.props.id, active);
+        }
+    }
+
     /**
      * That is a common public method that should activate component editor if it presents
      */
     activateEditor() {
         if(this.props.editorActive && !this.state.sourceEditorActive) {
-            this.setState({sourceEditorActive: true});
+            this.setEditorActive(true);
         }
     }
 
@@ -64,14 +71,18 @@ export default class CodeMirror extends Component {
         return true;
     }
 
+    componentDidUpdate() {
+        this.nodeWasUpdated && this.props.onNodeUpdated && this.props.onNodeUpdated(this.props.id);
+    }
+
     onSave() {
         this.props.updatePiece && this.props.updatePiece(this.props.id, {data: {html: this.code, updateNode: this.props.data.updateNode}});
         this.props.savePiece && this.props.savePiece(this.props.id);
-        this.setState({sourceEditorActive: false})
+        this.setEditorActive(false);
     }
 
     onClose() {
-        this.props.node ? this.setState({sourceEditorActive: false}) : (this.props.onClose && this.props.onClose())
+        this.props.node ? this.setEditorActive(false) : (this.props.onClose && this.props.onClose())
     }
 
     createEditor(){
@@ -101,6 +112,7 @@ export default class CodeMirror extends Component {
             }
         }
 
+        this.nodeWasUpdated = false;
         //render new data
         if(this.props.node) {
             let content = this.props.node.innerHTML;
@@ -108,6 +120,7 @@ export default class CodeMirror extends Component {
             let needRender = data.updateNode != undefined && data.updateNode != null ? data.updateNode : true;
             if (content != data.html && needRender == true) {
                 this.props.node.innerHTML = data.html;
+                this.nodeWasUpdated = true;
             }
         }
 
@@ -115,7 +128,7 @@ export default class CodeMirror extends Component {
 
     onClick(e){
         e.preventDefault();
-        this.setState({sourceEditorActive: true});
+        this.setEditorActive(true);
     }
 
     render() {

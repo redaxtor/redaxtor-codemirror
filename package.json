@@ -1,6 +1,6 @@
 {
   "name": "redaxtor-codemirror",
-  "version": "0.3.0",
+  "version": "0.8.0",
   "description": "CodeMirror component for Redaxtor library",
   "main": "lib/index.js",
   "files": [
