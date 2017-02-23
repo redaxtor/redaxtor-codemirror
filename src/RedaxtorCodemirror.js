@@ -72,7 +72,7 @@ export default class CodeMirror extends Component {
     }
 
     componentDidUpdate() {
-        this.nodeWasUpdated && this.props.onNodeUpdated && this.props.onNodeUpdated(this.props.id);
+        this.nodeWasUpdated && this.props.onNodeResized && this.props.onNodeResized(this.props.id);
     }
 
     onSave() {
