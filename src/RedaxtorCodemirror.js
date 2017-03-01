@@ -25,6 +25,8 @@ export default class CodeMirror extends Component {
         if(this.props.data) {
             this.initDataKeys = Object.keys(this.props.data);
         }
+
+        this.handleKeyUpBinded = this.handleKeyUp.bind(this);
     }
 
     setEditorActive(active) {
@@ -81,8 +83,11 @@ export default class CodeMirror extends Component {
         this.setEditorActive(false);
     }
 
-    onClose() {
-        this.props.node ? this.setEditorActive(false) : (this.props.onClose && this.props.onClose())
+    onClose(event) {
+        setTimeout( () => {
+            this.props.node ? this.setEditorActive(false) : (this.props.onClose && this.props.onClose());
+            this.overlay && this.overlay.removeEventListener('keyup', this.handleKeyUpBinded);
+        }, 200 );
     }
 
     createEditor(){
@@ -126,6 +131,21 @@ export default class CodeMirror extends Component {
 
     }
 
+    handleKeyUp(event){
+        switch (event.keyCode) {
+            case 27: //is escape
+                event.stopPropagation();
+                this.onClose();
+                break;
+        }
+    }
+
+    afterShowModal(){
+        this.overlay.tabIndex = "0"; //set for activate key events
+        this.overlay.addEventListener('keyup', this.handleKeyUpBinded); //for use native pereventdefault and native event system
+        this.overlay.focus();
+    }
+
     onClick(e){
         e.preventDefault();
         this.setEditorActive(true);
@@ -144,6 +164,7 @@ export default class CodeMirror extends Component {
             const html = this.props.node ? this.props.data.html : this.props.html;
             codemirror =  <Modal contentLabel="Edit source" isOpen={true} overlayClassName="r_modal-overlay r_visible"
                                  className="r_modal-content"
+                                 onAfterOpen={this.afterShowModal.bind(this)} ref={(overlay) => this.overlay = (overlay && overlay.node.children[0])}
                                  onRequestClose={this.onClose.bind(this)}>
                 <Codemirror
                     value={html_beautify(html)}
