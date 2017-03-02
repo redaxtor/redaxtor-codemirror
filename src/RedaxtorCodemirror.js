@@ -43,10 +43,20 @@ export default class CodeMirror extends Component {
         }
     }
 
+    deactivateEditor() {
+        if(this.props.editorActive && this.state.sourceEditorActive) {
+            this.setEditorActive(false);
+        }
+    }
+
     componentWillReceiveProps(newProps) {
         if(newProps.manualActivation) {
             this.props.onManualActivation(this.props.id);
             this.activateEditor();
+        }
+        if(newProps.manualDeactivation) {
+            this.props.onManualDeactivation(this.props.id);
+            this.deactivateEditor();
         }
     }
 
@@ -131,6 +141,13 @@ export default class CodeMirror extends Component {
         this.setEditorActive(true);
     }
 
+    handleCloseModal(event){
+        if(event.type == 'keydown' && event.keyCode === 27) {
+            this.modalNode.parentNode.dispatchEvent(new KeyboardEvent('keyDown', {key: 'Escape'}));
+        }
+    }
+
+
     render() {
         let codemirror = null;
 
@@ -143,8 +160,8 @@ export default class CodeMirror extends Component {
             };
             const html = this.props.node ? this.props.data.html : this.props.html;
             codemirror =  <Modal contentLabel="Edit source" isOpen={true} overlayClassName="r_modal-overlay r_visible"
-                                 className="r_modal-content"
-                                 onRequestClose={this.onClose.bind(this)}>
+                                 className="r_modal-content" ref={(modal) => this.modalNode = (modal && modal.node)}
+                                 onRequestClose={this.handleCloseModal().bind(this)}>
                 <Codemirror
                     value={html_beautify(html)}
                     onChange={this.updateCode.bind(this)} options={options}/>
