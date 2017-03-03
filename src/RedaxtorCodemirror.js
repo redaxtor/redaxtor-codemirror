@@ -128,6 +128,7 @@ export default class CodeMirror extends Component {
 
     onClick(e){
         e.preventDefault();
+        e.stopPropagation();
         this.setEditorActive(true);
     }
 
