@@ -162,7 +162,7 @@ export default class CodeMirror extends Component {
             const html = this.props.node ? this.props.data.html : this.props.html;
             codemirror =  <Modal contentLabel="Edit source" isOpen={true} overlayClassName="r_modal-overlay r_visible"
                                  className="r_modal-content" ref={(modal) => this.modalNode = (modal && modal.node)}
-                                 onRequestClose={this.handleCloseModal().bind(this)}>
+                                 onRequestClose={this.handleCloseModal.bind(this)}>
                 <Codemirror
                     value={html_beautify(html)}
                     onChange={this.updateCode.bind(this)} options={options}/>
