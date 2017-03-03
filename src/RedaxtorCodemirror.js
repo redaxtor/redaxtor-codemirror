@@ -190,3 +190,4 @@ export default class CodeMirror extends Component {
  */
 CodeMirror.__renderType = "BEFORE";
 CodeMirror.__editLabel = "Edit Source Code";
+CodeMirror.__name = "Source code";
