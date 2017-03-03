@@ -163,11 +163,16 @@ export default class CodeMirror extends Component {
             codemirror =  <Modal contentLabel="Edit source" isOpen={true} overlayClassName="r_modal-overlay r_visible"
                                  className="r_modal-content" ref={(modal) => this.modalNode = (modal && modal.node)}
                                  onRequestClose={this.handleCloseModal.bind(this)}>
+                <div className="r_modal-title">
+                    <div className="r_modal-close" onClick={this.onClose.bind(this)}>
+                        <i className="rx_icon rx_icon-close">&nbsp;</i>
+                    </div>
+                    <span>Edit Source Code</span>
+                </div>
                 <Codemirror
                     value={html_beautify(html)}
                     onChange={this.updateCode.bind(this)} options={options}/>
-                <div className="actions-bar">
-                    <div className="button button-cancel" onClick={this.onClose.bind(this)}>Cancel</div>
+                <div className="r_modal-actions-bar">
                     <div className="button button-save"
                          onClick={()=>this.props.node ? this.onSave() : (this.props.onSave && this.props.onSave(this.code))}>
                         Save
