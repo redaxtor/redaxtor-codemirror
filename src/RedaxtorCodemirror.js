@@ -75,7 +75,7 @@ export default class CodeMirror extends Component {
             if (!needRender && nextProps.data != this.props.data) {
                 let isChanged = false;
                 this.initDataKeys.forEach(key => isChanged = isChanged && (nextProps.data[key] != this.props.data[key]));
-                this.props.setPieceMessage && this.props.setPieceMessage(this.props.id, 'Page refresh required', 'warning');
+                this.props.setPieceMessage && this.props.setPieceMessage(this.props.id, 'Page refresh is required', 'warning');
             }
         }
         return true;
