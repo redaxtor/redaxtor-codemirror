@@ -123,17 +123,9 @@ export default class CodeMirror extends Component {
         }
 
         this.nodeWasUpdated = false;
-        //render new data
-        if(this.props.node) {
-            let content = this.props.node.innerHTML;
-            let data = this.props.data;
-            let needRender = data.updateNode != undefined && data.updateNode != null ? data.updateNode : true;
-            if (content != data.html && needRender == true) {
-                this.props.node.innerHTML = data.html;
-                this.nodeWasUpdated = true;
-            }
-        }
 
+        //render new data
+        this.nodeWasUpdated = CodeMirror.applyEditor(this.props.node, this.props.data);
     }
 
     onClick(e){
@@ -196,3 +188,14 @@ export default class CodeMirror extends Component {
 CodeMirror.__renderType = "BEFORE";
 CodeMirror.__editLabel = "Edit Source Code";
 CodeMirror.__name = "Source code";
+CodeMirror.applyEditor = function(node, data){
+    if(node) {
+        let content = node.innerHTML;
+        let needRender = data.updateNode !== undefined && data.updateNode !== null ? data.updateNode : true;
+        if (content !== data.html && needRender === true) {
+            node.innerHTML = data.html;
+            return true;
+        }
+    }
+    return false;
+};
